@@ -24,10 +24,11 @@
 import Foundation
 import AVFoundation
 import MediaPlayer
+import UIKit
 
 // MARK: - Custom types -
 
-public protocol JukeboxDelegate: class {
+public protocol JukeboxDelegate: AnyObject {
     func jukeboxStateDidChange(_ jukebox : Jukebox)
     func jukeboxPlaybackProgressDidChange(_ jukebox : Jukebox)
     func jukeboxDidLoadItem(_ jukebox : Jukebox, item : JukeboxItem)
@@ -228,9 +229,9 @@ open class Jukebox: NSObject, JukeboxItemDelegate {
     fileprivate var backgroundIdentifier         =   UIBackgroundTaskIdentifier.invalid
     fileprivate(set) open weak var delegate    :   JukeboxDelegate?
     
-    fileprivate (set) open var playIndex       =   0
-    fileprivate (set) open var queuedItems     :   [JukeboxItem]!
-    fileprivate (set) open var state           =   State.ready {
+    fileprivate(set) open var playIndex       =   0
+    fileprivate(set) open var queuedItems     :   [JukeboxItem]!
+    fileprivate(set) open var state           =   State.ready {
         didSet {
             delegate?.jukeboxStateDidChange(self)
         }

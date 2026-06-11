@@ -24,8 +24,9 @@
 import Foundation
 import AVFoundation
 import MediaPlayer
+import UIKit
 
-protocol JukeboxItemDelegate : class {
+protocol JukeboxItemDelegate: AnyObject {
     func jukeboxItemDidLoadPlayerItem(_ item: JukeboxItem)
     func jukeboxItemDidUpdate(_ item: JukeboxItem)
     func jukeboxItemDidFail(_ item: JukeboxItem)
@@ -50,7 +51,7 @@ open class JukeboxItem: NSObject {
     public  let URL: Foundation.URL
     
     fileprivate(set) open var playerItem: AVPlayerItem?
-    fileprivate (set) open var currentTime: Double?
+    fileprivate(set) open var currentTime: Double?
     fileprivate(set) open lazy var meta = Meta()
 
     
@@ -151,7 +152,7 @@ open class JukeboxItem: NSObject {
         if let error = e {
             var message = "\n\n***** Jukebox fatal error*****\n\n"
             if error.code == -1022 {
-                message += "It looks like you're using Xcode 7 and due to an App Transport Security issue (absence of SSL-based HTTP) the asset cannot be loaded from the specified URL: \"\(URL)\".\nTo fix this issue, append the following to your .plist file:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key>\n\t<true/>\n</dict>\n\n"
+                message += "An App Transport Security issue (absence of SSL-based HTTP) may prevent loading the asset from the specified URL: \"\(URL)\".\nTo fix this issue, append the following to your .plist file:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key>\n\t<true/>\n</dict>\n\n"
                 fatalError(message)
             }
             return false
